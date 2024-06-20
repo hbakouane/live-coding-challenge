@@ -41,7 +41,7 @@ class SendPushNotificationsToDevices extends Command
         $pushNotificationsDevices = PushNotificationDevice::query()
             ->with(['pushNotification', 'device']) // Eager load relationships because we will need them in the Job class
             ->whereHas('device', function ($query) {
-                return $query->where('is_expired', false);
+                return $query->whereUnexpired();
             })->limit(1000)->get();
 
         // Hande the push notifications to a queue job to send them to devices

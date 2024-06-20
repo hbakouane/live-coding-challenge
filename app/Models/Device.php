@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,6 +25,17 @@ class Device extends Model
     protected $casts = [
         'is_expired' => 'boolean'
     ];
+
+    /**
+     * A local scope to get only unexpired devices
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeWhereUnexpired(Builder $query)
+    {
+        return $query->where('is_expired', false);
+    }
 
     public function user()
     {
